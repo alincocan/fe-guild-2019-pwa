@@ -28,3 +28,19 @@ self.addEventListener('install', event => {
             })
     );
 });
+
+self.addEventListener('fetch', event => {
+    console.log('[Service Worker] Fetching something ....', event);
+
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                if (response) {
+                    console.log(response);
+                    return response;
+                }
+
+                return fetch(event.request);
+            })
+    );
+});
